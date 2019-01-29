@@ -1,4 +1,4 @@
-package com.codecool.krk;
+package com.codecool.krk.linkedList;
 
 import org.junit.jupiter.api.Test;
 
