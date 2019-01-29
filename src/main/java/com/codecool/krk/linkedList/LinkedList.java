@@ -1,4 +1,4 @@
-package com.codecool.krk;
+package com.codecool.krk.linkedList;
 
 public class LinkedList<T> {
     private LinkedNode<T> first;
