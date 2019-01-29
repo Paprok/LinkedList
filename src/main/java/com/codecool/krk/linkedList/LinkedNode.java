@@ -1,7 +1,6 @@
 package com.codecool.krk.linkedList;
 
 public class LinkedNode<T> {
-//    private int index;
     private LinkedNode next;
     private T value;
 
