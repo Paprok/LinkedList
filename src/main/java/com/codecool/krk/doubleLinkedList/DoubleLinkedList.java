@@ -1,11 +1,12 @@
-package com.codecool.krk.linkedList;
+package com.codecool.krk.doubleLinkedList;
 
-public class LinkedList<T> {
-    private LinkedNode<T> first;
-    private LinkedNode<T> last;
+
+public class DoubleLinkedList<T> {
+    private DoubleLinkedNode<T> first;
+    private DoubleLinkedNode<T> last;
     private int size;
 
-    public LinkedList() {
+    public DoubleLinkedList() {
         this.first = null;
         this.last = null;
         this.size = 0;
@@ -17,12 +18,13 @@ public class LinkedList<T> {
 
     public void append(T item) {
         if (size > 0) {
-            LinkedNode<T> newNode = new LinkedNode<>(item);
+            DoubleLinkedNode<T> newNode = new DoubleLinkedNode<>(item);
             this.last.setNext(newNode);
+            newNode.setPrevious(this.last);
             this.last = newNode;
             this.size++;
         } else {
-            LinkedNode<T> newNode = new LinkedNode<>(item);
+            DoubleLinkedNode<T> newNode = new DoubleLinkedNode<>(item);
             this.first = newNode;
             this.last = newNode;
             this.size++;
@@ -30,24 +32,73 @@ public class LinkedList<T> {
     }
 
     public void add(int index, T item) throws IndexOutOfBoundsException {
-        LinkedNode<T> newNode = new LinkedNode<>(item);
+        DoubleLinkedNode<T> newNode = new DoubleLinkedNode<>(item);
         if (index == 0) {
-            newNode.setNext(this.first);
+            DoubleLinkedNode<T> next = this.first;
             this.first = newNode;
-            if (this.size == 0) {
-                this.last = newNode;
-            }
-        } else {
-            LinkedNode<T> previous = getNode(index - 1);
-            LinkedNode<T> next = previous.getNext();
-            previous.setNext(newNode);
             newNode.setNext(next);
+            if(next != null) {
+                next.setPrevious(newNode);
+            }
+        } else if (index == size) {
+            DoubleLinkedNode<T> previous = this.last;
+            this.last = newNode;
+            newNode.setPrevious(previous);
+            if(previous != null) {
+                previous.setNext(newNode);
+            }
+
+        } else {
+            DoubleLinkedNode<T> previous = getNode(index - 1);
+            DoubleLinkedNode<T> next = previous.getNext();
+            previous.setNext(newNode);
+            newNode.setPrevious(previous);
+            newNode.setNext(next);
+            next.setPrevious(newNode);
         }
         this.size++;
     }
 
     public void add(T item) {
         append(item);
+    }
+
+    private DoubleLinkedNode<T> getNode(int index) throws IndexOutOfBoundsException {
+        DoubleLinkedNode<T> node;
+        if (index >= size || index < 0) {
+            throw new IndexOutOfBoundsException();
+        } else {
+            node = findNode(index);
+        }
+        return node;
+    }
+
+    private DoubleLinkedNode<T> findNode(int index) {
+        DoubleLinkedNode<T> node;
+        if(index<size/2) {
+            node = searchFromFirst(index);
+        } else {
+            node = searchFromLast(index);
+        }
+        return node;
+    }
+
+    private DoubleLinkedNode<T> searchFromLast(int index) {
+        DoubleLinkedNode<T> node;
+        node = this.last;
+        for (int i = size -1; i > index; i--) {
+            node = node.getPrevious();
+        }
+        return node;
+    }
+
+    private DoubleLinkedNode<T> searchFromFirst(int index) {
+        DoubleLinkedNode<T> node;
+        node = this.first;
+        for (int i = 0; i < index; i++) {
+            node = node.getNext();
+        }
+        return node;
     }
 
     public void remove(int index) throws IndexOutOfBoundsException {
@@ -68,12 +119,12 @@ public class LinkedList<T> {
         if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         } else {
-            LinkedNode<T> previous = getNode(index - 1);
+            DoubleLinkedNode<T> previous = getNode(index - 1);
             removeNextNode(previous);
         }
     }
 
-    private void removeNextNode(LinkedNode<T> node) throws IndexOutOfBoundsException {
+    private void removeNextNode(DoubleLinkedNode<T> node) throws IndexOutOfBoundsException {
         node.setNext(node.getNext().getNext());
         --this.size;
         if(node.getNext() == null){
@@ -81,22 +132,9 @@ public class LinkedList<T> {
         }
     }
 
-    private LinkedNode<T> getNode(int index) throws IndexOutOfBoundsException {
-        LinkedNode<T> node;
-        if (index >= size || index < 0) {
-            throw new IndexOutOfBoundsException();
-        } else {
-            node = this.first;
-            for (int i = 0; i < index; i++) {
-                node = node.getNext();
-            }
-        }
-        return node;
-    }
-
     public String toString() {
         StringBuilder builder = new StringBuilder();
-        LinkedNode<T> node = this.first;
+        DoubleLinkedNode<T> node = this.first;
         while (node != null) {
             builder.append(node.getValue());
             builder.append(' ');
