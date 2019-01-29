@@ -30,11 +30,19 @@ public class LinkedList<T> {
     }
 
     public void add(int index, T item) throws IndexOutOfBoundsException {
-        LinkedNode<T> previous = getNode(index - 1);
-        LinkedNode<T> next = previous.getNext();
         LinkedNode<T> newNode = new LinkedNode<>(item);
-        previous.setNext(newNode);
-        newNode.setNext(next);
+        if (index == 0) {
+            newNode.setNext(this.first);
+            this.first = newNode;
+            if(this.size == 0){
+                this.last = newNode;
+            }
+        } else {
+            LinkedNode<T> previous = getNode(index - 1);
+            LinkedNode<T> next = previous.getNext();
+            previous.setNext(newNode);
+            newNode.setNext(next);
+        }
         this.size++;
     }
 
@@ -43,7 +51,7 @@ public class LinkedList<T> {
     }
 
     public void remove(int index, T item) throws IndexOutOfBoundsException {
-        if (index >= size) {
+        if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException();
         } else {
             LinkedNode<T> previous = getNode(index -1);
@@ -58,7 +66,7 @@ public class LinkedList<T> {
 
     private LinkedNode<T> getNode(int index) throws IndexOutOfBoundsException {
         LinkedNode<T> node;
-        if (index >= size) {
+        if (index >= size || index < 0) {
             throw new IndexOutOfBoundsException();
         } else {
             node = this.first;
