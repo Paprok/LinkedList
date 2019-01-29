@@ -34,7 +34,7 @@ public class LinkedList<T> {
         if (index == 0) {
             newNode.setNext(this.first);
             this.first = newNode;
-            if(this.size == 0){
+            if (this.size == 0) {
                 this.last = newNode;
             }
         } else {
@@ -50,18 +50,35 @@ public class LinkedList<T> {
         append(item);
     }
 
-    public void remove(int index, T item) throws IndexOutOfBoundsException {
-        if (index >= size || index < 0) {
+    public void remove(int index) throws IndexOutOfBoundsException {
+        if (index == 0) {
+            removeFirstNode();
+        } else
+            removeTailNode(index);
+    }
+
+    private void removeFirstNode() {
+        this.first = this.first.getNext();
+        --this.size;
+    }
+
+
+
+    private void removeTailNode(int index) {
+        if (index >= this.size) {
             throw new IndexOutOfBoundsException();
         } else {
-            LinkedNode<T> previous = getNode(index -1);
-            removeNode(previous);
+            LinkedNode<T> previous = getNode(index - 1);
+            removeNextNode(previous);
         }
     }
 
-    private void removeNode(LinkedNode<T> node) {
-            node.setNext(node.getNext().getNext());
-            --this.size;
+    private void removeNextNode(LinkedNode<T> node) throws IndexOutOfBoundsException {
+        node.setNext(node.getNext().getNext());
+        --this.size;
+        if(node.getNext() == null){
+            this.last = node;
+        }
     }
 
     private LinkedNode<T> getNode(int index) throws IndexOutOfBoundsException {
@@ -77,10 +94,10 @@ public class LinkedList<T> {
         return node;
     }
 
-    public String toString(){
+    public String toString() {
         StringBuilder builder = new StringBuilder();
         LinkedNode<T> node = this.first;
-        while(node!=null){
+        while (node != null) {
             builder.append(node.getValue());
             builder.append(' ');
             node = node.getNext();
