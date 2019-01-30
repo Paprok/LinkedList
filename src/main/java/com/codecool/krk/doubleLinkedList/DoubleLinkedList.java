@@ -19,8 +19,7 @@ public class DoubleLinkedList<T> {
     public void append(T item) {
         if (size > 0) {
             DoubleLinkedNode<T> newNode = new DoubleLinkedNode<>(item);
-            this.last.setNext(newNode);
-            newNode.setPrevious(this.last);
+            connectNodes(this.last, newNode);
             this.last = newNode;
             this.size++;
         } else {
@@ -32,6 +31,7 @@ public class DoubleLinkedList<T> {
     }
 
     public void add(int index, T item) throws IndexOutOfBoundsException {
+        //TODO refactor using getNode(index)
         DoubleLinkedNode<T> newNode = new DoubleLinkedNode<>(item);
         if (index == 0) {
             DoubleLinkedNode<T> next = this.first;
@@ -51,10 +51,8 @@ public class DoubleLinkedList<T> {
         } else {
             DoubleLinkedNode<T> previous = getNode(index - 1);
             DoubleLinkedNode<T> next = previous.getNext();
-            previous.setNext(newNode);
-            newNode.setPrevious(previous);
-            newNode.setNext(next);
-            next.setPrevious(newNode);
+            connectNodes(previous, newNode);
+            connectNodes(newNode, next);
         }
         this.size++;
     }
@@ -102,34 +100,27 @@ public class DoubleLinkedList<T> {
     }
 
     public void remove(int index) throws IndexOutOfBoundsException {
-        if (index == 0) {
-            removeFirstNode();
-        } else
-            removeTailNode(index);
-    }
-
-    private void removeFirstNode() {
-        this.first = this.first.getNext();
-        --this.size;
-    }
-
-
-
-    private void removeTailNode(int index) {
-        if (index >= this.size) {
-            throw new IndexOutOfBoundsException();
+        DoubleLinkedNode<T> toRemove = getNode(index);
+        DoubleLinkedNode<T> previous = toRemove.getPrevious();
+        DoubleLinkedNode<T> next = toRemove.getNext();
+        if (size == 1) {
+            this.first = null;
+            this.last = null;
+        } else if (previous == null) {
+            this.first = next;
+            next.setPrevious(null);
+        } else if (next == null) {
+            this.last = previous;
+            previous.setNext(null);
         } else {
-            DoubleLinkedNode<T> previous = getNode(index - 1);
-            removeNextNode(previous);
+            connectNodes(previous, next);
         }
+        --this.size;
     }
 
-    private void removeNextNode(DoubleLinkedNode<T> node) throws IndexOutOfBoundsException {
-        node.setNext(node.getNext().getNext());
-        --this.size;
-        if(node.getNext() == null){
-            this.last = node;
-        }
+    private void connectNodes(DoubleLinkedNode<T> previous, DoubleLinkedNode<T> next) {
+        previous.setNext(next);
+        next.setPrevious(previous);
     }
 
     public String toString() {
