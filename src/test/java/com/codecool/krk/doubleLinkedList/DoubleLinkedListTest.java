@@ -203,4 +203,57 @@ public class DoubleLinkedListTest {
         assertEquals(actual, expected);
         assertEquals(5, list.getSize());     //TODO ask if this assert makes sense
     }
+
+    @Test
+    void testGetOnEmptyThrowsException(){
+        DoubleLinkedList<Integer> list = new DoubleLinkedList<>();
+
+        assertThrows(IndexOutOfBoundsException.class,
+                ()->list.get(0)
+        );
+    }
+
+    @Test
+    void testGetOnlyElement(){
+        DoubleLinkedList<Integer> list = new DoubleLinkedList<>();
+        fillListWithNumbers(list, 0);
+
+        int expected = 0;
+        int actual = list.get(0);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFirstElement(){
+        DoubleLinkedList<Integer> list = new DoubleLinkedList<>();
+        fillListWithNumbers(list, 6);
+
+        int expected = 0;
+        int actual = list.get(0);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetMidtElement(){
+        DoubleLinkedList<Integer> list = new DoubleLinkedList<>();
+        fillListWithNumbers(list, 6);
+
+        int expected = 3;
+        int actual = list.get(3);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetLasttElement(){
+        DoubleLinkedList<Integer> list = new DoubleLinkedList<>();
+        fillListWithNumbers(list, 6);
+
+        int expected = 6;
+        int actual = list.get(6);
+
+        assertEquals(expected, actual);
+    }
 }

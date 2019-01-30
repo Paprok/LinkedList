@@ -201,4 +201,57 @@ public class LinkedListTest {
         assertEquals(actual, expected);
         assertEquals(5, list.getSize());     //TODO ask if this assert makes sense
     }
+
+    @Test
+    void testGetOnEmptyThrowsException(){
+        LinkedList<Integer> list = new LinkedList<>();
+
+        assertThrows(IndexOutOfBoundsException.class,
+                ()->list.get(0)
+        );
+    }
+
+    @Test
+    void testGetOnlyElement(){
+        LinkedList<Integer> list = new LinkedList<>();
+        fillListWithNumbers(list, 0);
+
+        int expected = 0;
+        int actual = list.get(0);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetFirstElement(){
+        LinkedList<Integer> list = new LinkedList<>();
+        fillListWithNumbers(list, 6);
+
+        int expected = 0;
+        int actual = list.get(0);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetMidtElement(){
+        LinkedList<Integer> list = new LinkedList<>();
+        fillListWithNumbers(list, 6);
+
+        int expected = 3;
+        int actual = list.get(3);
+
+        assertEquals(expected, actual);
+    }
+
+    @Test
+    void testGetLasttElement(){
+        LinkedList<Integer> list = new LinkedList<>();
+        fillListWithNumbers(list, 6);
+
+        int expected = 6;
+        int actual = list.get(6);
+
+        assertEquals(expected, actual);
+    }
 }

@@ -61,6 +61,11 @@ public class DoubleLinkedList<T> {
         append(item);
     }
 
+
+    public T get(int index){
+        return getNode(index).getValue();
+    }
+
     private DoubleLinkedNode<T> getNode(int index) throws IndexOutOfBoundsException {
         DoubleLinkedNode<T> node;
         if (index >= size || index < 0) {

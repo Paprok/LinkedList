@@ -81,6 +81,10 @@ public class LinkedList<T> {
         }
     }
 
+    public T get(int index){
+        return getNode(index).getValue();
+    }
+
     private LinkedNode<T> getNode(int index) throws IndexOutOfBoundsException {
         LinkedNode<T> node;
         if (index >= size || index < 0) {
